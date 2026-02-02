@@ -1,10 +1,9 @@
 import asyncio
 import sys
 
-import httpx
 import pytest
 from langchain_core.documents import Document
-from langchain_openai import OpenAIEmbeddings
+from langchain_core.embeddings import FakeEmbeddings
 
 from langchain_gaussdb import GaussVectorSettings, GaussVectorStore, IvfFlatParams
 
@@ -18,19 +17,12 @@ class TestGaussVectorStore:
     @pytest.fixture(scope="module")
     def vectorstore(self):
         """Create a vectorstore for integration tests"""
-        embeddings = OpenAIEmbeddings(
-            model="Qwen/Qwen3-Embedding-8B",
-            api_key="sk-xxx",
-            base_url="https://api.siliconflow.cn/v1",
-            dimensions=1024,
-            http_client=httpx.Client(verify=False),
-            http_async_client=httpx.AsyncClient(verify=False),
-        )
+        embeddings = FakeEmbeddings(size=1024)
         config = GaussVectorSettings(
-            host="10.25.106.120",
-            port=9800,
+            host="127.0.0.1",
+            port=8000,
             user="langchain_gv",
-            password="Gauss_234",
+            password=" ",
             database="postgres",
             table_name="my_docs"
         )
@@ -320,10 +312,10 @@ class TestGaussVectorStore:
             Document(page_content="GsIVFFLAT test 3", metadata={"source": "test3"}),
         ]
         config = GaussVectorSettings(
-            host="10.25.106.116",
-            port=6899,
-            user="llamaindex_gv",
-            password="Gauss_234",
+            host="127.0.0.1",
+            port=8000,
+            user="langchain_gv",
+            password=" ",
             database="postgres",
             table_name="test_vector2",
             index_type="GsIVFFLAT",
@@ -356,10 +348,10 @@ class TestGaussVectorStore:
             Document(page_content="GsIVFFLAT test 3", metadata={"source": "test3"}),
         ]
         config = GaussVectorSettings(
-            host="10.25.106.116",
-            port=6899,
-            user="llamaindex_gv",
-            password="Gauss_234",
+            host="127.0.0.1",
+            port=8000,
+            user="langchain_gv",
+            password=" ",
             database="postgres",
             table_name="test_vector2",
             index_type="GsIVFFLAT",
